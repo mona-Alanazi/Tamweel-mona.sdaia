@@ -83,8 +83,11 @@ I trained three models on 8,000 rows and compared them on 2,000 held-out rows. F
 | XGBoost | 0.8124 | **0.3338** | 0.34 s | 61 |
 | LightGBM | 0.8138 | 0.3248 | 0.24 s | 41 |
 
-![Day 1 learning curves](artifacts/day1_learning_curves.png)
-![Day 1 ROC and PR curves](artifacts/day1_roc_pr.png)
+![Day 1 learning curves](![<img width="1453" height="493" alt="day1_learning_curves" src="https://github.com/user-attachments/assets/d9da53dc-98d0-4d5a-b68f-8a3f704d0e66" />
+]
+)
+![Day 1 ROC and PR curves](<img width="1453" height="541" alt="day1_roc_pr" src="https://github.com/user-attachments/assets/678fe87f-ea47-443d-b316-626c87de3a45" />
+)
 
 **Takeaway:** all three are basically tied. The simplest model wins on AUC and speed. But this split was random and had **1,226 customers on both sides**, so the numbers are probably too optimistic. That's exactly what Day 2 fixes.
 
