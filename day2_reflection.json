@@ -1,0 +1,14 @@
+{
+  "responses": {
+    "leak_example": "العمود days_past_due_60 فيه target leakage: حسب available_at في الـ feature dictionary قيمته after_application، يعني أيام التأخر تُرصد بعد تقديم الطلب، ووقت القرار ما نعرف هل العميل بيتأخر أو لا. ونفس الشي مع collection_calls، لأن اتصالات التحصيل تصير بعد التعثر. لما استخدمناهم في leaky random control حقق النموذج ROC-AUC = 0.9999 وAP = 0.9988، وهذي نتيجة غير واقعية تدل على التسرب، فحذفناهم قبل التدريب.",
+    "split_reason": "time ordering: لأن النموذج في الواقع يتدرب على الماضي ويتنبأ بطلبات مستقبلية، فاستخدمنا 3 forward folds تبدأ في 2023-07-01 و2024-01-01 و2024-07-01. customer separation: لأن العميل نفسه ممكن يتكرر، ولو كان في التدريب والتحقق مع بعض بيحفظه النموذج والنتائج بتطلع متفائلة. في الـ random split كان فيه بين 1,656 و1,713 shared customers، وبعد الـ customer purge صاروا 0 في كل fold. strict 90-day maturity: الشرط application_date + 90 يومًا < validation start يضمن إن نتيجة كل طلب تدريب صارت معروفة قبل بداية التحقق، وانحذف بسببه بين 785 و861 طلبًا immature في كل fold.",
+    "observed_gap": "الفجوة الأولى: AP في leaky random (0.9988) ناقص AP في clean random (0.3110) = 0.6879، وهذا يوضح أثر التسرب. الفجوة الثانية: AP في clean random (0.3110) ناقص AP في honest fixed (0.3153) = -0.0044. الفجوتين ما تثبتان universal superiority لأن المقارنة على populations مختلفة (10,000 طلب مقابل 5,039 طلبًا لاحقًا) وبأحجام تدريب مختلفة. والفجوة الثانية أصغر من الـ standard deviation بين الـ folds (ap_sd بين 0.03 و0.04)، والـ folds فترات زمنية مترابطة وليست تجارب مستقلة، والـ error bars ليست confidence interval.",
+    "imputer_reason": "نتعلم الـ imputation من صفوف التدريب فقط، لأننا لو حسبنا قيم التعويض (مثل الـ median) من كل البيانات بتدخل معلومات من الـ validation إلى التدريب، وهذا preprocessing leakage. أما الـ inner stopping set فهو جزء داخلي من بيانات تدريب الـ fold، ونستخدمه لاختيار عدد الأشجار (tree count) بناءً على log loss، عشان نتجنب الـ overfitting بدون ما نستخدم بيانات الـ outer validation. مثلًا اختار الـ tuned model عدد 24 و36 و19 tree في الـ folds الثلاثة.",
+    "limitations": "search-budget limitation: الـ Optuna search محدود بـ 8 trials و120 ثانية، وعلى reserved cohort صغيرة (1,935 طلبًا فيها 176 positives فقط)، فممكن ما نوصل لأفضل parameters. وفعلًا الـ tuned model (AP = 0.3133) ما تفوق على الـ fixed model (AP = 0.3153). OOF-coverage limitation: الـ OOF predictions تغطي 5,039 طلبًا فقط (50.39%)، و4,961 طلبًا warm-up بدون تنبؤات. كما أن الـ folds الثلاثة متتابعة زمنيًا ومعتمدة على بعض، فهي ليست final independent test ولا تثبت fairness أو calibration."
+  },
+  "checkpoint": {
+    "status": "READY_FOR_REVIEW",
+    "missing": [],
+    "automatic_grade": null
+  }
+}
