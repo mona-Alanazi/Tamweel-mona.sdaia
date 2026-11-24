@@ -2,9 +2,20 @@
 
 **SDA-DSC-211 · Five-day Advanced machine learning project (SDAIA Academy )  · Free CPU on Google Colab**
 
+
 **Project Builder: MONA AlAnazi - منى العنزي** 
+
+
 **Email : monzi@moe.gov.sa**
+
+
 **DAY:22/11/2026**
+
+**[GitHub Repo:](https://github.com/mona-Alanazi/Tamweel-mona.sdaia/blob/main)**
+
+
+
+
 
 This repo is my five-day journey building a credit-risk model for **Tamweel Lite**, a fictional financing dataset. The goal sounds simple: for every financing request, estimate the chance that the customer defaults within 90 days. Doing it *honestly* is the hard part. That means no data leakage, no peeking at the future, a decision threshold that respects real review capacity, and probabilities I can actually trust.
 
