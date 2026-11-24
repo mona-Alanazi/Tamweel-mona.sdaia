@@ -131,7 +131,7 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 | Honest, fixed 80 trees | 5,039 | 0.7976 | **0.3153** ± 0.0426 |
 | Honest, tuned | 5,039 | 0.7855 | 0.3133 ± 0.0259 |
 
-[Validation comparison](<img width="1453" height="565" alt="day2_validation_comparison" src="https://github.com/user-attachments/assets/b1e984f9-7f34-45ad-9194-a0911144807b" />
+[Validation comparison](<img width="1453" height="565" alt="day2_validation_comparison" src="https://github.com/user-attachments/assets/6560c4e3-7048-4f62-8794-32e27386550e" />
 )
 
 **Takeaway:** the leaky model looked *perfect*, which is the red flag. Once honest, AP sits around **0.31**. Tuning didn't really help, which is a useful finding in itself.
