@@ -201,7 +201,7 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 | 5 | prior_defaults | 0.007 | 0.183 |
 
 [Permutation importance:](!<img width="1573" height="613" alt="permutation_importance" src="https://github.com/user-attachments/assets/fab843c9-c46e-4161-b652-b3ae0469b53c" />)
-[SHAP beeswarm:](<img width="1279" height="705" alt="shap_beeswarm" src="https://github.com/user-attachments/assets/9ac7ea4d-57f4-4802-be92-e0d1f04722e8" />)
+[SHAP beeswarm:](!<img width="1279" height="705" alt="shap_beeswarm" src="https://github.com/user-attachments/assets/9ac7ea4d-57f4-4802-be92-e0d1f04722e8" />)
 
 ### One request up close: `TR-009585`
 This is the highest-scoring request in the SHAP sample. Its raw score is **0.903**, but after calibration it's only **0.480**.
@@ -214,7 +214,7 @@ This is the highest-scoring request in the SHAP sample. Its raw score is **0.903
 
 Changing `bureau_score` by ±1 left the prediction and the top 3 reasons unchanged.
 
-[SHAP waterfall](<img width="1183" height="769" alt="shap_waterfall" src="https://github.com/user-attachments/assets/5c5c7a52-64bb-4883-8aa2-20a08ad3e8ac" />)
+[SHAP waterfall](!<img width="1183" height="769" alt="shap_waterfall" src="https://github.com/user-attachments/assets/5c5c7a52-64bb-4883-8aa2-20a08ad3e8ac" />)
 
 ### Calibration (measured on a separate period)
 | | ROC-AUC | AP | Brier (lower is better) | ECE (lower is better) |
@@ -224,11 +224,11 @@ Changing `bureau_score` by ±1 left the prediction and the top 3 reasons unchang
 
 Ranking stays the same (the mapping is monotone), but the probabilities became much more honest.
 
-[Reliability curve](<img width="1213" height="973" alt="reliability_curve" src="https://github.com/user-attachments/assets/999997bf-87bb-4690-81e0-cfab42929664" />)
+[Reliability curve](!<img width="1213" height="973" alt="reliability_curve" src="https://github.com/user-attachments/assets/999997bf-87bb-4690-81e0-cfab42929664" />)
 
 **Stability:** 200 customer-cluster bootstrap replicates gave an AP 95% interval of [0.197, 0.338]. The Brier change interval was [−0.054, −0.037], negative in every replicate.
 
-[Stability](<img width="1453" height="493" alt="stability_summary" src="https://github.com/user-attachments/assets/16dc79a7-870b-4afa-a326-37241dc9eb01" />)
+[Stability](!<img width="1453" height="493" alt="stability_summary" src="https://github.com/user-attachments/assets/16dc79a7-870b-4afa-a326-37241dc9eb01" />)
 
 ### Review zone vs capacity
 The threshold was chosen on the policy role (raw 0.588, calibrated 0.173), with a ±0.02 diagnostic band.
@@ -240,7 +240,7 @@ The threshold was chosen on the policy role (raw 0.588, calibrated 0.173), with 
 
 Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a new policy needs new evidence.
 
-[Review zone](<img width="1453" height="553" alt="review_zone" src="https://github.com/user-attachments/assets/173cd51b-5957-4305-8960-7a4e5c006fbe" />)
+[Review zone](!<img width="1453" height="553" alt="review_zone" src="https://github.com/user-attachments/assets/173cd51b-5957-4305-8960-7a4e5c006fbe" />)
 
 ---
 
@@ -260,8 +260,8 @@ Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a
 
 **Decision: `KEEP SINGLE` → Logistic Regression.**
 
-[Model diversity](<img width="1313" height="553" alt="day5_diversity" src="https://github.com/user-attachments/assets/d669d6f3-7d7b-42c9-a4c8-c42fe478e84f" />)
-[Ensemble comparison](<img width="1573" height="613" alt="day5_ensemble_comparison" src="https://github.com/user-attachments/assets/8f5f82d8-5fd1-4b40-aeb4-506e5c971172" />)
+[Model diversity](!<img width="1313" height="553" alt="day5_diversity" src="https://github.com/user-attachments/assets/d669d6f3-7d7b-42c9-a4c8-c42fe478e84f" />)
+[Ensemble comparison](!<img width="1573" height="613" alt="day5_ensemble_comparison" src="https://github.com/user-attachments/assets/8f5f82d8-5fd1-4b40-aeb4-506e5c971172" />)
 
 ### Final policy
 | | Value |
@@ -273,15 +273,15 @@ Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a
 | Most loaded period | 11.7% (within capacity) |
 | Regional FPR | 6.31% (eastern) to 10.29% (western), a gap of about 4 pp that needs review |
 
-[Policy and regions](<img width="1453" height="553" alt="day5_policy_regions" src="https://github.com/user-attachments/assets/d5242a03-0f9f-47ae-82f8-67f4950b81eb" />)
-[Calibration fit](<img width="1453" height="589" alt="day5_calibration_fit" src="https://github.com/user-attachments/assets/c57d244b-cada-4535-9210-7f610931641c" />)
+[Policy and regions](!<img width="1453" height="553" alt="day5_policy_regions" src="https://github.com/user-attachments/assets/d5242a03-0f9f-47ae-82f8-67f4950b81eb" />)
+[Calibration fit](!<img width="1453" height="589" alt="day5_calibration_fit" src="https://github.com/user-attachments/assets/c57d244b-cada-4535-9210-7f610931641c" />)
 
 ### Challenge batch (2,500 unlabeled requests)
 | Above threshold | Capacity (12%) | Final flags | Removed by cap |
 |---:|---:|---:|---:|
 | 330 | 300 | **300** | 30 |
 
-[Challenge capacity](<img width="1333" height="493" alt="day5_challenge_capacity" src="https://github.com/user-attachments/assets/8c7cc139-bb16-4236-8c24-aa39d10f6e7e" />)
+[Challenge capacity](!<img width="1333" height="493" alt="day5_challenge_capacity" src="https://github.com/user-attachments/assets/8c7cc139-bb16-4236-8c24-aa39d10f6e7e" />)
 
 The submission was replayed from the exported model and matched exactly (`REPLAY_MATCH`).
 
