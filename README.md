@@ -119,13 +119,15 @@ Each fold trains only on the past, only on labels that have matured (90 days), a
 
 
 
-[Fold sizes Plot :](!<img width="1093" height="445" alt="day2_fold_sizes" src="https://github.com/user-attachments/assets/1c3781d8-2cee-4bd5-aecc-c642c9afef54" />)
+**Fold sizes Plot :**
+<img width="1093" height="445" alt="day2_fold_sizes" src="https://github.com/user-attachments/assets/1c3781d8-2cee-4bd5-aecc-c642c9afef54" />
 
 ### Bounded Optuna search
 The search ran on a separate cohort of 1,935 requests (176 positives), with 8 of 8 trials completed in about 4 seconds.
 Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_child_samples=40`.
 
-[Optuna search:](!<img width="1093" height="433" alt="day2_search" src="https://github.com/user-attachments/assets/2e6a504c-ae23-4b5a-b7c6-8f3702e6597f" />)
+**Optuna search:**
+<img width="1093" height="433" alt="day2_search" src="https://github.com/user-attachments/assets/2e6a504c-ae23-4b5a-b7c6-8f3702e6597f" />
 
 ### What leakage does to your score
 | Protocol | Rows | ROC-AUC | AP (mean ± SD) |
@@ -135,7 +137,8 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 | Honest, fixed 80 trees | 5,039 | 0.7976 | **0.3153** ± 0.0426 |
 | Honest, tuned | 5,039 | 0.7855 | 0.3133 ± 0.0259 |
 
-[Validation comparison:](!<img width="1453" height="565" alt="day2_validation_comparison" src="https://github.com/user-attachments/assets/6560c4e3-7048-4f62-8794-32e27386550e" />)
+**Validation comparison:**
+<img width="1453" height="565" alt="day2_validation_comparison" src="https://github.com/user-attachments/assets/6560c4e3-7048-4f62-8794-32e27386550e" />
 
 **Takeaway:** the leaky model looked *perfect*, which is the red flag. Once honest, AP sits around **0.31**. Tuning didn't really help, which is a useful finding in itself.
 
@@ -157,7 +160,8 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 
 "Flag nobody" scores 92.4% accuracy and catches zero defaults. That's why accuracy alone is misleading here.
 
-[Day 3 ROC and PR:](!<img width="1393" height="529" alt="day3_roc_pr" src="https://github.com/user-attachments/assets/5b349bff-e730-4c19-b201-4ff700d60285" />)
+**Day 3 ROC and PR:**
+<img width="1393" height="529" alt="day3_roc_pr" src="https://github.com/user-attachments/assets/5b349bff-e730-4c19-b201-4ff700d60285" />
 
 ### Picking the operating point (weighted model)
 | Rule | Threshold | Flags | Recall | Precision | Loss | Fits capacity? |
@@ -166,7 +170,8 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 | Min loss, no limit | 0.4486 | 1,141 (22.6%) | 64.1% | 21.6% | 2,275 | No |
 | **Min loss within capacity** | **0.6583** | **526 (10.4%)** | 40.9% | 29.8% | 2,639 | **Yes** |
 
-[Cost curve:](!<img width="1213" height="793" alt="cost_curve" src="https://github.com/user-attachments/assets/f8aa07ca-1408-4c22-9479-3dd0debe4ebe" />)
+**Cost curve:**
+<img width="1213" height="793" alt="cost_curve" src="https://github.com/user-attachments/assets/f8aa07ca-1408-4c22-9479-3dd0debe4ebe" />
 
 ### Capacity check, period by period
 | Period | Requests | Capacity (12%) | Flags | Within capacity? |
@@ -178,7 +183,8 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 **Sensitivity:** with FN cost set to 8, 10 or 12, the threshold stays at **0.6583**, because capacity is the binding constraint.
 **Regions:** the false-positive rate ranges from 7.64% to 8.29%, a gap of **0.65 percentage points**. This is a descriptive check only, not a fairness certificate.
 
-[Capacity and regions:](!<img width="1333" height="493" alt="day3_capacity_regions" src="https://github.com/user-attachments/assets/0f3a3d08-6968-42ba-8a5a-fde616932cc1" />)
+**Capacity and regions:**
+<img width="1333" height="493" alt="day3_capacity_regions" src="https://github.com/user-attachments/assets/0f3a3d08-6968-42ba-8a5a-fde616932cc1" />
 
 **Takeaway:** respecting capacity costs **+236 loss units** compared with 0.5, but 0.5 simply isn't doable in practice.
 
@@ -204,8 +210,14 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 | 4 | savings_balance_sar | 0.009 | 0.217 |
 | 5 | prior_defaults | 0.007 | 0.183 |
 
-[Permutation importance:](!<img width="1573" height="613" alt="permutation_importance" src="https://github.com/user-attachments/assets/fab843c9-c46e-4161-b652-b3ae0469b53c" />)
-[SHAP beeswarm:](!<img width="1279" height="705" alt="shap_beeswarm" src="https://github.com/user-attachments/assets/9ac7ea4d-57f4-4802-be92-e0d1f04722e8" />)
+**Permutation importance:**
+
+<img width="1573" height="613" alt="permutation_importance" src="https://github.com/user-attachments/assets/fab843c9-c46e-4161-b652-b3ae0469b53c" />
+
+
+**SHAP beeswarm:**
+
+<img width="1279" height="705" alt="shap_beeswarm" src="https://github.com/user-attachments/assets/9ac7ea4d-57f4-4802-be92-e0d1f04722e8" />
 
 ### One request up close: `TR-009585`
 This is the highest-scoring request in the SHAP sample. Its raw score is **0.903**, but after calibration it's only **0.480**.
@@ -218,7 +230,9 @@ This is the highest-scoring request in the SHAP sample. Its raw score is **0.903
 
 Changing `bureau_score` by ±1 left the prediction and the top 3 reasons unchanged.
 
-[SHAP waterfall](!<img width="1183" height="769" alt="shap_waterfall" src="https://github.com/user-attachments/assets/5c5c7a52-64bb-4883-8aa2-20a08ad3e8ac" />)
+**SHAP waterfall**
+
+<img width="1183" height="769" alt="shap_waterfall" src="https://github.com/user-attachments/assets/5c5c7a52-64bb-4883-8aa2-20a08ad3e8ac" />
 
 ### Calibration (measured on a separate period)
 | | ROC-AUC | AP | Brier (lower is better) | ECE (lower is better) |
@@ -228,11 +242,15 @@ Changing `bureau_score` by ±1 left the prediction and the top 3 reasons unchang
 
 Ranking stays the same (the mapping is monotone), but the probabilities became much more honest.
 
-[Reliability curve](!<img width="1213" height="973" alt="reliability_curve" src="https://github.com/user-attachments/assets/999997bf-87bb-4690-81e0-cfab42929664" />)
+**Reliability curve**
+
+<img width="1213" height="973" alt="reliability_curve" src="https://github.com/user-attachments/assets/999997bf-87bb-4690-81e0-cfab42929664" />
 
 **Stability:** 200 customer-cluster bootstrap replicates gave an AP 95% interval of [0.197, 0.338]. The Brier change interval was [−0.054, −0.037], negative in every replicate.
 
-[Stability](!<img width="1453" height="493" alt="stability_summary" src="https://github.com/user-attachments/assets/16dc79a7-870b-4afa-a326-37241dc9eb01" />)
+**Stability summary**
+
+<img width="1453" height="493" alt="stability_summary" src="https://github.com/user-attachments/assets/16dc79a7-870b-4afa-a326-37241dc9eb01" />
 
 ### Review zone vs capacity
 The threshold was chosen on the policy role (raw 0.588, calibrated 0.173), with a ±0.02 diagnostic band.
@@ -244,7 +262,9 @@ The threshold was chosen on the policy role (raw 0.588, calibrated 0.173), with 
 
 Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a new policy needs new evidence.
 
-[Review zone](!<img width="1453" height="553" alt="review_zone" src="https://github.com/user-attachments/assets/173cd51b-5957-4305-8960-7a4e5c006fbe" />)
+**Review zone**
+
+<img width="1453" height="553" alt="review_zone" src="https://github.com/user-attachments/assets/173cd51b-5957-4305-8960-7a4e5c006fbe" />
 
 ---
 
@@ -264,8 +284,13 @@ Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a
 
 **Decision: `KEEP SINGLE` → Logistic Regression.**
 
-[Model diversity](!<img width="1313" height="553" alt="day5_diversity" src="https://github.com/user-attachments/assets/d669d6f3-7d7b-42c9-a4c8-c42fe478e84f" />)
-[Ensemble comparison](!<img width="1573" height="613" alt="day5_ensemble_comparison" src="https://github.com/user-attachments/assets/8f5f82d8-5fd1-4b40-aeb4-506e5c971172" />)
+**Model diversity**
+
+<img width="1313" height="553" alt="day5_diversity" src="https://github.com/user-attachments/assets/d669d6f3-7d7b-42c9-a4c8-c42fe478e84f" />
+
+**Ensemble comparison**
+
+<img width="1573" height="613" alt="day5_ensemble_comparison" src="https://github.com/user-attachments/assets/8f5f82d8-5fd1-4b40-aeb4-506e5c971172" />
 
 ### Final policy
 | | Value |
@@ -277,15 +302,22 @@ Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a
 | Most loaded period | 11.7% (within capacity) |
 | Regional FPR | 6.31% (eastern) to 10.29% (western), a gap of about 4 pp that needs review |
 
-[Policy and regions](!<img width="1453" height="553" alt="day5_policy_regions" src="https://github.com/user-attachments/assets/d5242a03-0f9f-47ae-82f8-67f4950b81eb" />)
-[Calibration fit](!<img width="1453" height="589" alt="day5_calibration_fit" src="https://github.com/user-attachments/assets/c57d244b-cada-4535-9210-7f610931641c" />)
+**Policy and regions**
+
+<img width="1453" height="553" alt="day5_policy_regions" src="https://github.com/user-attachments/assets/d5242a03-0f9f-47ae-82f8-67f4950b81eb" />
+
+**Calibration fit**
+
+<img width="1453" height="589" alt="day5_calibration_fit" src="https://github.com/user-attachments/assets/c57d244b-cada-4535-9210-7f610931641c" />
 
 ### Challenge batch (2,500 unlabeled requests)
 | Above threshold | Capacity (12%) | Final flags | Removed by cap |
 |---:|---:|---:|---:|
 | 330 | 300 | **300** | 30 |
 
-[Challenge capacity](!<img width="1333" height="493" alt="day5_challenge_capacity" src="https://github.com/user-attachments/assets/8c7cc139-bb16-4236-8c24-aa39d10f6e7e" />)
+**Challenge capacity**
+
+<img width="1333" height="493" alt="day5_challenge_capacity" src="https://github.com/user-attachments/assets/8c7cc139-bb16-4236-8c24-aa39d10f6e7e" />
 
 The submission was replayed from the exported model and matched exactly (`REPLAY_MATCH`).
 
