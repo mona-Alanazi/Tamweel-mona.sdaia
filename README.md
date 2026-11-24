@@ -112,8 +112,9 @@ Each fold trains only on the past, only on labels that have matured (90 days), a
 | 1 | 2023-07 → 2023-12 | 3,223 | 1,632 | 110 | **0** |
 | 2 | 2024-01 → 2024-06 | 4,460 | 1,674 | 135 | **0** |
 | 3 | 2024-07 → 2024-12 | 5,731 | 1,733 | 139 | **0** |
-
-![Fold sizes](artifacts/day2_fold_sizes.png)
+(!<img width="1093" height="445" alt="day2_fold_sizes" src="https://github.com/user-attachments/assets/668d83b7-04fb-4b21-9b06-d4473df9e67c" />
+)
+[Fold sizes Plot :](!<img width="1093" height="445" alt="day2_fold_sizes" src="https://github.com/user-attachments/assets/1c3781d8-2cee-4bd5-aecc-c642c9afef54" />)
 
 ### Bounded Optuna search
 The search ran on a separate cohort of 1,935 requests (176 positives), with 8 of 8 trials completed in about 4 seconds.
