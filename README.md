@@ -14,7 +14,7 @@
 **[GitHub Repo:](https://github.com/mona-Alanazi/Tamweel-mona.sdaia/blob/main)**
 
 
-
+**[Colab NoteBook:](https://colab.research.google.com/drive/13ZRqlS-zzJK-eEtzIi0dCqGWjDV3_z8g?usp=sharing)**
 
 
 This repo is my five-day journey building a credit-risk model for **Tamweel Lite**, a fictional financing dataset. The goal sounds simple: for every financing request, estimate the chance that the customer defaults within 90 days. Doing it *honestly* is the hard part. That means no data leakage, no peeking at the future, a decision threshold that respects real review capacity, and probabilities I can actually trust.
