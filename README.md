@@ -16,6 +16,8 @@
 
 **[Colab NoteBook:](https://colab.research.google.com/drive/13ZRqlS-zzJK-eEtzIi0dCqGWjDV3_z8g?usp=sharing)**
 
+**Final self-check (Notebook 99):** `SELF_CHECK_COMPLETE` · files to fix: 0 · manual notes: 0
+
 
 This repo is my five-day journey building a credit-risk model for **Tamweel Lite**, a fictional financing dataset. The goal sounds simple: for every financing request, estimate the chance that the customer defaults within 90 days. Doing it *honestly* is the hard part. That means no data leakage, no peeking at the future, a decision threshold that respects real review capacity, and probabilities I can actually trust.
 
@@ -361,12 +363,56 @@ The submission was replayed from the exported model and matched exactly (`REPLAY
 ## Repository structure
 
 ```
-notebooks/      01 → 05 executed notebooks + 99 final check
-artifacts/      CSV, JSON, figures and final_model/
-reports/        DECISION_CARD.md · INTERPRETABILITY_REPORT.md · MODEL_CARD.md · ENSEMBLE_DECISION.md
-submission/     submission.csv (2,500 rows) · project_bundle.zip
-data/           course data + manifest (SHA-256 verified)
-scripts/        course support code + inference.py
+Tamweel-mona.sdaia/
+├── README.md                     ← this file (includes Daily answers)
+├── requirements-colab.txt        ← pinned package versions
+├── constraints.txt
+│
+├── notebooks/                    ← executed Colab notebooks
+│   ├── 01_baseline_boosting.ipynb
+│   ├── 02_validation_tuning.ipynb
+│   ├── 03_cost_sensitive_decision.ipynb
+│   ├── 04_explain_calibrate.ipynb
+│   ├── 05_final_model.ipynb
+│   └── 99_final_submission_check.ipynb
+│
+├── data/                         ← course data (SHA-256 verified)
+│   ├── data_contract.json
+│   ├── data_manifest.json
+│   ├── tamweel_train.csv
+│   ├── tamweel_dirty.csv
+│   └── tamweel_challenge.csv
+│
+├── evidence/                     ← daily outputs + run records
+│   ├── day1/   model comparison, predictions, split membership, curves, day1_run.json
+│   ├── day2/   leakage & fold audits, Optuna results, best params, day2_run.json
+│   ├── day3/   threshold metrics & sweep, OOF predictions, region audit, cost curve, day3_run.json
+│   └── day4/   calibration metrics, permutation importance, SHAP, reliability, day4_run.json
+│
+├── artifacts/                    ← Day 5 final outputs
+│   ├── final_model/              model.json · model_manifest.json
+│   ├── final_metrics.json
+│   ├── final_policy.json
+│   ├── ensemble_comparison.csv
+│   ├── day5_run.json · environment.json
+│   ├── day5_oof_predictions.csv · day5_fold_scores.csv
+│   ├── day5_oof_provenance.json · day5_final_provenance.json
+│   └── day5_*.png                figures
+│
+├── reports/
+│   ├── MODEL_CARD.md
+│   └── ENSEMBLE_DECISION.md
+│
+├── submission/
+│   └── submission.csv            ← 2,500 rows: application_id, probability, decision
+│
+├── scripts/
+│   ├── inference.py
+│   └── rebuild_final.py
+│
+└── tamweel/                      ← project package
+    ├── __init__.py
+    └── inference.py
 ```
 
 ## How to reproduce
@@ -375,6 +421,14 @@ scripts/        course support code + inference.py
 2. Choose **Runtime → Run all**. Setup checks package versions and file hashes automatically.
 3. Keep `FAST_MODE=True` and seed `211`.
 4. Results should match the tables above, give or take the last decimal.
+
+## Final check
+
+Open `notebooks/99_final_submission_check.ipynb` in Colab, set `PROJECT_URL` to this repository link (leave `PROJECT_ZIP` empty), and run the cells. Current result:
+
+```
+SELF_CHECK_COMPLETE | files to fix: 0 | manual notes: 0
+```
 
 ---
 
