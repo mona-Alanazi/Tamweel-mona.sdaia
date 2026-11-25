@@ -1,6 +1,8 @@
 # Tamweel Lite: Predicting 90-Day Default
 
-**SDA-DSC-211 · Five-day Advanced machine learning project (SDAIA Academy )  · Free CPU on Google Colab**
+**Training program: Advanced ML Application · [SDAIA Academy](https://github.com/SDAIAAcademy)**
+
+**SDA-DSC-211 · Five-part machine learning project · Free CPU on Google Colab**
 
 
 **Project Builder: MONA AlAnazi - منى العنزي** 
@@ -9,7 +11,7 @@
 **Email : monzi@moe.gov.sa**
 
 
-**DAY:22/11/2026**
+**Dates: 22–25 Nov 2026**
 
 **[GitHub Repo:](https://github.com/mona-Alanazi/Tamweel-mona.sdaia/blob/main)**
 
@@ -19,11 +21,19 @@
 **Final self-check (Notebook 99):** `SELF_CHECK_COMPLETE` · files to fix: 0 · manual notes: 0
 
 
-This repo is my five-day journey building a credit-risk model for **Tamweel Lite**, a fictional financing dataset. The goal sounds simple: for every financing request, estimate the chance that the customer defaults within 90 days. Doing it *honestly* is the hard part. That means no data leakage, no peeking at the future, a decision threshold that respects real review capacity, and probabilities I can actually trust.
+This repo is my five-part journey building a credit-risk model for **Tamweel Lite**, a fictional financing dataset. The goal sounds simple: for every financing request, estimate the chance that the customer defaults within 90 days. Doing it *honestly* is the hard part. That means no data leakage, no peeking at the future, a decision threshold that respects real review capacity, and probabilities I can actually trust.
 
-Each day built on the one before:
+Each part built on the one before:
 
 > **Compare models → validate honestly → choose a threshold → explain and calibrate → pick the final model and submit**
+
+| Part | Topic | Date |
+|---|---|---|
+| Part 1 | Baseline vs Boosting | 22 Nov 2026 |
+| Part 2 | Validate Honestly Before Tuning | 23 Nov 2026 |
+| Part 3 | Choose a Threshold You Can Defend | 24 Nov 2026 |
+| Part 4 | Explain the Model and Test Its Probabilities | 25 Nov 2026 |
+| Part 5 | Final Model and Submission | 25 Nov 2026 |
 
 > **Note:** All data are synthetic. This is a training exercise. It is not a real lending model and must never be used for real financing decisions.
 
@@ -37,36 +47,37 @@ Each day built on the one before:
 | **Training data** | 10,000 requests · 22 predictors · default rate **7.89%** (789 / 10,000) |
 | **Challenge data** | 2,500 later requests from new customers, without labels |
 | **Final model** | **Logistic Regression** + sigmoid calibration (`KEEP SINGLE`) |
-| **Best honest AP (Day 5)** | **0.392** (fold SD 0.030) |
+| **Best honest AP (Part 5)** | **0.392** (fold SD 0.030) |
 | **Review threshold** | calibrated probability ≥ **0.1223**, capped at **12%** of each batch |
 | **Challenge flags** | **300 / 2,500** sent to review (30 removed by the cap) |
 | **Environment** | Python 3.13 · CPU only · seed = 211 · no GPU, no API keys |
+| **Program** | Advanced ML Application · [SDAIA Academy](https://github.com/SDAIAAcademy) |
 
 ---
 
 ## Daily answers | الإجابات اليومية
 
-### Day 1 | اليوم الأول
+### Day 1 | اليوم الأول — Part 1 · 22 Nov 2026
 **أي نموذج اخترت، وما الدليل الأقوى من نتائجك؟**
 
 اخترت **Logistic Regression**. على comparison set فيها 2,000 طلب، حقق أعلى ROC-AUC (**0.8213**) مقابل 0.8124 لـ XGBoost و0.8138 لـ LightGBM. والـ average precision كان قريبًا جدًا من الأفضل (0.3258 مقابل 0.3338 لـ XGBoost). كذلك هو أسرع بحوالي 10 مرات وأسهل في التفسير، فالـ boosting لم يقدم تحسنًا يبرر تعقيده. لكن هذا الـ split عشوائي وفيه 1,226 عميلًا مشتركًا، فالنتيجة أولية وتحتاج تحققًا أصدق.
 
-### Day 2 | اليوم الثاني
+### Day 2 | اليوم الثاني — Part 2 · 23 Nov 2026
 **ما التسرب الذي اكتشفته، وكيف منعه تصميم التحقق؟**
 
 اكتشفت **target leakage** في `days_past_due_60` و`collection_calls`، لأن معلوماتهما **after_application** ولا تكون متاحة وقت القرار. معهما حقق النموذج AP = **0.9988**، وبعد حذفهما نزل إلى **0.3110**، أي أن التسرب وحده صنع فجوة 0.688. ومنع التصميم التسرب بأربع طرق: **forward time folds**، وقاعدة **90-day label maturity** (application_date + 90 < validation start)، و**customer purge** (صفر عملاء مشتركين في كل fold)، و**training-only imputation**. وأجريت بحث Optuna على reserved cohort منفصلة. النتيجة الصادقة: AP = **0.3153 ± 0.0426**.
 
-### Day 3 | اليوم الثالث
+### Day 3 | اليوم الثالث — Part 3 · 24 Nov 2026
 **لماذا لا تكون العتبة الثابتة 0.5 مناسبة دائمًا لسياسة المراجعة؟**
 
 لأن 0.5 تفترض أن خطأ FN وخطأ FP متساويان، وأن الدرجات معايرة، وأنه لا يوجد حد للسعة، والثلاثة غير صحيحة هنا. خطأ FN يكلف 10 وحدات وFP يكلف وحدة واحدة. كما أن الـ class weighting يغيّر مستوى الدرجات، فعند 0.5 رفع النموذج weighted إشارة على **1,005** طلبات (**19.9%**)، وهذا يتجاوز سقف 12%. لذلك اخترت العتبة **0.6583**: هي أقل خسارة ضمن السعة في كل فترة، وتعطي 526 إشارة (10.4%) وrecall = 40.9% وخسارة 2,639 وحدة.
 
-### Day 4 | اليوم الرابع
+### Day 4 | اليوم الرابع — Part 4 · 25 Nov 2026
 **ما أهم خاصية في تفسيرك، ولماذا لا يثبت ذلك السببية؟**
 
 أهم خاصية هي **`bureau_score`**، وكانت الأولى في الطريقتين. خلطها أدى إلى أكبر انخفاض في AP (**0.127**)، ولها أعلى mean |SHAP| (**0.904 log-odds**)، وكلما ارتفعت قلّ الخطر. لكن هذا لا يثبت السببية: SHAP وpermutation يصفان كيف يستخدم *النموذج* الخصائص، لا ما يسبب التعثر في الواقع. كما أن الخصائص مترابطة وقد تتقاسم الإشارة، ولم نُجرِ أي تجربة أو تدخل، والبيانات اصطناعية.
 
-### Day 5 | اليوم الخامس
+### Day 5 | اليوم الخامس — Part 5 · 25 Nov 2026
 **لماذا اخترت النموذج الفردي أو التجميع في النسخة النهائية؟**
 
 اخترت النموذج الفردي **Logistic Regression** (`KEEP SINGLE`). حقق أعلى mean AP = **0.392** (fold SD = 0.030) على nested forward OOF، أعلى من XGBoost (0.353) وLightGBM (0.345) وكل التجميعات: Weighted (0.389) وStack (0.383) وEqual (0.372). لم يتجاوز أي تجميع شرط الـ Worth-It Gate (أن يتفوق بأكثر من fold SD واحد)، فالتجميع يضيف تعقيدًا بلا فائدة.
@@ -78,7 +89,7 @@ Each day built on the one before:
 | File | What's inside | How I used it |
 |---|---|---|
 | `tamweel_train.csv` | 10,000 requests (2022–2024), 22 features + target | Training and validation |
-| `tamweel_dirty.csv` | Same rows plus 2 leaky columns | Day 2 leakage audit only |
+| `tamweel_dirty.csv` | Same rows plus 2 leaky columns | Part 2 leakage audit only |
 | `tamweel_challenge.csv` | 2,500 requests (2025), no labels | Final predictions only |
 | `feature_dictionary.csv` | Meaning, unit and `available_at` for every column | Deciding what is allowed in the model |
 
@@ -88,7 +99,9 @@ Each day built on the one before:
 
 ---
 
-## Day 1: Baseline vs Boosting
+## Part 1: Baseline vs Boosting
+
+**Date:** 22 Nov 2026
 
 **The question:** does a fancy boosting model beat a simple Logistic Regression?
 
@@ -100,18 +113,20 @@ I trained three models on 8,000 rows and compared them on 2,000 held-out rows. F
 | XGBoost | 0.8124 | **0.3338** | 0.34 s | 61 |
 | LightGBM | 0.8138 | 0.3248 | 0.24 s | 41 |
 
-**Day 1 learning curves:**
+**Part 1 learning curves:**
 <img width="1453" height="493" alt="day1_learning_curves" src="https://github.com/user-attachments/assets/1979a697-8e44-41a9-987e-948a757a6fd6" />
 
 
-**Day 1 ROC and PR curves:**
+**Part 1 ROC and PR curves:**
 <img width="1453" height="541" alt="day1_roc_pr" src="https://github.com/user-attachments/assets/c4bd9e6c-117b-4c94-b9f1-191535027827" />
 
-**Takeaway:** all three are basically tied. The simplest model wins on AUC and speed. But this split was random and had **1,226 customers on both sides**, so the numbers are probably too optimistic. That's exactly what Day 2 fixes.
+**Takeaway:** all three are basically tied. The simplest model wins on AUC and speed. But this split was random and had **1,226 customers on both sides**, so the numbers are probably too optimistic. That's exactly what Part 2 fixes.
 
 ---
 
-## Day 2: Validate Honestly Before Tuning
+## Part 2: Validate Honestly Before Tuning
+
+**Date:** 23 Nov 2026
 
 **The question:** how much of my score is real, and how much is leakage?
 
@@ -161,7 +176,9 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 
 ---
 
-## Day 3: Choose a Threshold You Can Defend
+## Part 3: Choose a Threshold You Can Defend
+
+**Date:** 24 Nov 2026
 
 **The question:** at what score do we send a request to review?
 
@@ -177,7 +194,7 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 
 "Flag nobody" scores 92.4% accuracy and catches zero defaults. That's why accuracy alone is misleading here.
 
-**Day 3 ROC and PR:**
+**Part 3 ROC and PR:**
 <img width="1393" height="529" alt="day3_roc_pr" src="https://github.com/user-attachments/assets/5b349bff-e730-4c19-b201-4ff700d60285" />
 
 ### Picking the operating point (weighted model)
@@ -207,7 +224,9 @@ Best search AP = **0.333**, with `learning_rate=0.085`, `num_leaves=31`, `min_ch
 
 ---
 
-## Day 4: Explain the Model and Test Its Probabilities
+## Part 4: Explain the Model and Test Its Probabilities
+
+**Date:** 25 Nov 2026
 
 **The questions:** what is the model actually using, and can its scores be read as probabilities?
 
@@ -285,7 +304,9 @@ Result: **`CAPACITY_REVIEW_REQUIRED`.** I didn't retune on evaluation, because a
 
 ---
 
-## Day 5: Final Model and Submission
+## Part 5: Final Model and Submission
+
+**Date:** 25 Nov 2026
 
 **The question:** is an ensemble worth the extra complexity?
 
@@ -356,9 +377,9 @@ The submission was replayed from the exported model and matched exactly (`REPLAY
 - The data are **synthetic**, so results don't transfer to real customers.
 - Folds are related time periods, not independent experiments. SD is descriptive, not a confidence interval.
 - Thresholds were chosen on OOF labels, so the reported loss is optimistic development evidence.
-- The Day 4 SHAP analysis explained a weighted LightGBM, not the final Logistic model, so it should be re-checked on the final model.
+- The Part 4 SHAP analysis explained a weighted LightGBM, not the final Logistic model, so it should be re-checked on the final model.
 - The regional checks are descriptive only, with no fairness certification.
-- Capacity can fail in future periods (it already did in Day 4's evaluation), so it needs monitoring.
+- Capacity can fail in future periods (it already did in Part 4's evaluation), so it needs monitoring.
 
 ## Repository structure
 
@@ -383,13 +404,13 @@ Tamweel-mona.sdaia/
 │   ├── tamweel_dirty.csv
 │   └── tamweel_challenge.csv
 │
-├── evidence/                     ← daily outputs + run records
+├── evidence/                     ← outputs + run records for Parts 1–4
 │   ├── day1/   model comparison, predictions, split membership, curves, day1_run.json
 │   ├── day2/   leakage & fold audits, Optuna results, best params, day2_run.json
 │   ├── day3/   threshold metrics & sweep, OOF predictions, region audit, cost curve, day3_run.json
 │   └── day4/   calibration metrics, permutation importance, SHAP, reliability, day4_run.json
 │
-├── artifacts/                    ← Day 5 final outputs
+├── artifacts/                    ← Part 5 final outputs
 │   ├── final_model/              model.json · model_manifest.json
 │   ├── final_metrics.json
 │   ├── final_policy.json
@@ -432,4 +453,4 @@ SELF_CHECK_COMPLETE | files to fix: 0 | manual notes: 0
 
 ---
 
-*Educational project for SDA-DSC-211. Synthetic data only. Not for real financing decisions.*
+*Educational project for SDA-DSC-211 · Advanced ML Application program by [SDAIA Academy](https://github.com/SDAIAAcademy). Synthetic data only. Not for real financing decisions.*
